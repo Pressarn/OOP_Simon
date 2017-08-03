@@ -141,7 +141,7 @@ public class Contest {
         }
 
         eventName = eventName.trim().substring(0,1).toUpperCase() + eventName.substring(1).toLowerCase();
-        Event e = new Event(eventName, attemptsAllowed);
+        Event e = new Event(eventName, attemptsAllowed, biggerBetter);
         eventArrayList.add(e);
 
         System.out.println(e.getEventName() + " has been added.");
@@ -447,10 +447,10 @@ public class Contest {
                     if (score >= firstPlace) {
                         event.awardMedal();
                         firstPlace = score;
-                    } else if (score >= secondPlace && event.ammountOfMedalsAwarded() < 2) {
+                    } else if (score >= secondPlace && event.amountOfMedalsAwarded() < 2) {
                         event.awardMedal();
                         secondPlace = score;
-                    } else if (score >= thirdPlace && event.ammountOfMedalsAwarded() < 3) {
+                    } else if (score >= thirdPlace && event.amountOfMedalsAwarded() < 3) {
                         thirdPlace = score;
                     }
 
@@ -460,10 +460,10 @@ public class Contest {
                     if (score <= firstPlace && firstPlace != 0.0) {
                         event.awardMedal();
                         firstPlace = score;
-                    } else if ((score <= secondPlace || secondPlace == 0) && event.ammountOfMedalsAwarded() < 2)  {
+                    } else if ((score <= secondPlace || secondPlace == 0) && event.amountOfMedalsAwarded() < 2)  {
                         event.awardMedal();
                         secondPlace = score;
-                    } else if ((score <= thirdPlace || thirdPlace == 0) && event.ammountOfMedalsAwarded() < 3 ){
+                    } else if ((score <= thirdPlace || thirdPlace == 0) && event.amountOfMedalsAwarded() < 3 ){
                         thirdPlace = score;
                     }
                 }
@@ -663,6 +663,7 @@ public class Contest {
         competition.execute();
         competition.exit();
     }
+
 
     public class TopListPosition implements Comparable<TopListPosition> {
 

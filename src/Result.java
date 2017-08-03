@@ -54,11 +54,11 @@ public class Result {
         return newResult;
     }
 
-    public String toString(){
-        return "resultToString" + result + "";
-    }
-
-    //Borttagna pga verkar inte användas?
+//    public String toString(){
+//        return "resultToString" + result + "";
+//    }
+//
+//    //Borttagna pga verkar inte användas?
 //    public String toString(){
 //        return "ResultString: " + value + " " + participant + " " + result;
 //    }

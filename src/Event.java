@@ -4,12 +4,13 @@ public class Event {
 
     private String eventName;
     private int attemptsAllowed;
-
+    private boolean biggerBetter;
     private int medal = 0;
 
-    public Event(String eventName, int attemptsAllowed) {
+    public Event(String eventName, int attemptsAllowed, boolean biggerBetter) {
         this.eventName = eventName;
         this.attemptsAllowed = attemptsAllowed;
+        this.biggerBetter = biggerBetter;
     }
 
     public String getEventName() {
@@ -18,6 +19,10 @@ public class Event {
 
     public int getAttemptsAllowed() {
         return attemptsAllowed;
+    }
+
+    public boolean getBiggerBetter() {
+        return biggerBetter;
     }
 
     public int amountOfMedalsAwarded(){
