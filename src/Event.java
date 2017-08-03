@@ -1,58 +1,45 @@
-import java.util.ArrayList;
+//rodi0231_sisc7379_arho2993
 
-/**
- * Created by SimonSchwieler on 2017-06-08.
- */
 public class Event {
 
     private String eventName;
-    private int attempts;
+    private int attemptsAllowed;
     private boolean biggerBetter;
+    private int medal = 0;
 
-    public Event(String eventName, int attempts, boolean biggerBetter){
+    public Event(String eventName, int attemptsAllowed, boolean biggerBetter) {
         this.eventName = eventName;
-        this.attempts = attempts;
+        this.attemptsAllowed = attemptsAllowed;
         this.biggerBetter = biggerBetter;
     }
 
-
-    public String getEventName(){
+    public String getEventName() {
         return eventName;
     }
 
-    public int getAttempts(){
-        return attempts;
+    public int getAttemptsAllowed() {
+        return attemptsAllowed;
     }
 
-
-    public boolean isBiggerBetter(){
+    public boolean getBiggerBetter() {
         return biggerBetter;
     }
 
-    public void addResult(Result result){
-
+    public int ammountOfMedalsAwarded(){
+        return medal;
     }
 
-    public void eventResult(){
-
+    public void awardMedal(){
+        ++medal;
     }
 
-    public ArrayList<Result> sortResult(ArrayList<Result> resultArrayList){
-        return resultArrayList;
-
-    }
-    public void removeResult(Participant participant){
-
-    }
-
-    public int getAttemptsAllowed(){
-        return attempts;
+    public void resetMedals(){
+        medal = 0;
     }
 
     public String toString(){
-        return eventName + " " + attempts + " " + biggerBetter;
+        return eventName + "";
     }
-
 
 
 }

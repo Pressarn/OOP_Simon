@@ -6,13 +6,8 @@ public class Result {
     private double value;
     private Participant participant;
     private Result result;
+    private double newResult;
     private Event event;
-
-    public Result(Participant participant, double value, Result result){
-        this.participant = participant;
-        this.value = value;
-        this.result = result;
-    }
 
     public Result(Event e, Result r, Participant p) {
         this.event = e;
@@ -20,17 +15,27 @@ public class Result {
         this.result = r;
     }
 
+    public Result (double newResult, Participant participant, Event event){
+        this.newResult = newResult;
+        this.participant = participant;
+        this.event = event;
+    }
+
+    public Result(Participant participant, double value, Result result){
+        this.participant = participant;
+        this.value = value;
+        this.result = result;
+    }
+
     public double getValue(){
         return value;
     }
 
-    public Participant getParticipant(){
-        return participant;
-    }
 
     //Behövs både getResult och getResultFromList?
-    public Result getResult(){
-        return result;
+
+    public double getResult(){
+        return newResult;
     }
 
     public Result getResultFromList() {
@@ -41,12 +46,25 @@ public class Result {
         return event;
     }
 
-    public String toString(){
-        return "ResultString: " + value + " " + participant + " " + result;
+    public Participant getParticipant(){
+        return participant;
+    }
+
+    public double getNewResult(){
+        return newResult;
     }
 
     public String toString(){
-        return "   ---" + result.getResult() + " " + event.getEventName() + " " +  participant.getFirstName() + " " + participant.getLastName();
+        return "resultToString" + result + "";
     }
+
+    //Borttagna pga verkar inte användas?
+//    public String toString(){
+//        return "ResultString: " + value + " " + participant + " " + result;
+//    }
+//
+//    public String toString(){
+//        return "   ---" + result.getResult() + " " + event.getEventName() + " " +  participant.getFirstName() + " " + participant.getLastName();
+//    }
 
 }

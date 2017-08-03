@@ -8,6 +8,7 @@ public class Contest {
 
     Scanner keyboard = new Scanner(System.in);
     private ArrayList<Result> resultArrayList = new ArrayList<>();
+    private ArrayList<Result> resultListArrayHandler = new ArrayList<>();
     private ArrayList<Participant> participantArrayList = new ArrayList<>();
     private ArrayList<Event> eventArrayList = new ArrayList<>();
     private int id = 99;
@@ -264,7 +265,7 @@ public class Contest {
             Result r = new Result(result, p, e);
             resultArrayList.add(r);
             p.setResultToList(e, r, p);
-            resultListArrayHandler.add(new ResultHandler(e, r, p));
+            resultListArrayHandler.add(new Result(e, r, p));
 
             System.out.println("Result " + result + " in " + e.getEventName() + " has been registred.");
         }
@@ -397,22 +398,22 @@ public class Contest {
 
 
         for (Participant participant : this.participantArrayList) {
-            for (ResultHandler resultHandler : participant.getResults()) {
+            for (Result result : participant.getResults()) {
 
                 if(event.getBiggerBetter()) {
 
-                    participantName = resultHandler.getParticipant().getFirstName() + " " + resultHandler.getParticipant().getLastName();
-                    participantResult = resultHandler.getParticipant().getBestResultBiggerBetterTrue(event);
+                    participantName = result.getParticipant().getFirstName() + " " + result.getParticipant().getLastName();
+                    participantResult = result.getParticipant().getBestResultBiggerBetterTrue(event);
 
 
                 }
-                else if (!event.getBiggerBetter()){
-
-                    participantName = resultHandler.getParticipant().getFirstName() + " " + resultHandler.getParticipant().getLastName();
-                    participantResult = resultHandler.getParticipant().getBestResultBiggerBetterFalse(event);
-
-
-                }
+//                else if (!event.getBiggerBetter()){
+//
+//                    participantName = result.getParticipant().getFirstName() + " " + result.getParticipant().getLastName();
+//                    participantResult = result.getParticipant().getBestResultBiggerBetterFalse(event);
+//
+//
+//                }
 
                 if (participantResult >= 0) {
                     topListForTeams.add(new TopListPosition(participantName, participantResult, participantEvent));
@@ -494,45 +495,45 @@ public class Contest {
             System.out.println("No teams available.");
 
         } else {
-            Map<String, TeamMedals> teams = new HashMap<>();
+            Map<String, Team> teams = new HashMap<>();
             for (Event event : this.eventArrayList) {
                 for (Participant participant : this.participantArrayList) {
 
                     Integer position = this.getPosition(participant, event);
                     if (position != null) {
-                        TeamMedals teamMedals = teams.get(participant.getTeamName());
-                        if (teamMedals == null) {
-                            teamMedals = new TeamMedals(0, 0, 0);
-                            teams.put(participant.getTeamName(), teamMedals);
+                        Team team = teams.get(participant.getTeamName());
+                        if (team == null) {
+                            team = new Team(0, 0, 0);
+                            teams.put(participant.getTeamName(), team);
                         }
 
                         if (position == 1) {
-                            teamMedals.incrementFirstPlace();
+                            team.incrementFirstPlace();
 
                         } else if (position == 2) {
-                            teamMedals.incrementSecondPlace();
+                            team.incrementSecondPlace();
 
                         } else if (position == 3) {
-                            teamMedals.incrementThirdPlace();
+                            team.incrementThirdPlace();
                         }
                     }
 
                 }
             }
             for (Participant participant : this.participantArrayList) {
-                TeamMedals teamMedals = teams.get(participant.getTeamName());
-                if(teamMedals == null) {
-                    teamMedals = new TeamMedals(0, 0, 0);
-                    teams.put(participant.getTeamName(), teamMedals);
+                Team team = teams.get(participant.getTeamName());
+                if(team == null) {
+                    team = new Team(0, 0, 0);
+                    teams.put(participant.getTeamName(), team);
                 }
             }
 
-            List<TeamResult> teamResults = new ArrayList<>();
-            for (Map.Entry<String, TeamMedals> entry : teams.entrySet()) {
-                teamResults.add(new TeamResult(entry.getValue(), entry.getKey()));
+            List<Team> teamResults = new ArrayList<>();
+            for (Map.Entry<String, Team> entry : teams.entrySet()) {
+                teamResults.add(new Team(entry.getValue(), entry.getKey()));
             }
-            Collections.sort(teamResults, new Comparator<TeamResult>() {
-                public int compare(TeamResult obj1, TeamResult obj2) {
+            Collections.sort(teamResults, new Comparator<Team>() {
+                public int compare(Team obj1, Team obj2) {
                     if (obj1.getTeamMedals().getFirstPlace() != obj2.getTeamMedals().getFirstPlace()) {
                         return obj2.getTeamMedals().getFirstPlace() - obj1.getTeamMedals().getFirstPlace();
                     }
@@ -548,11 +549,11 @@ public class Contest {
             System.out.println("");
             System.out.println("1st    2nd    3rd    Team name");
             System.out.println("*******************************");
-            for (TeamResult teamResult : teamResults) {
+            for (Team teamResult : teamResults) {
                 System.out.println(teamResult.getTeamMedals().getFirstPlace() + "      " +
                         teamResult.getTeamMedals().getSecondPlace() + "       " +
                         teamResult.getTeamMedals().getThirdPlace() + "      " +
-                        teamResult.getTeam());
+                        teamResult.getTeamMedals());
 
             }
             teamResults.clear();
@@ -623,7 +624,17 @@ public class Contest {
         }
     }
 
-    //Fundera på om denna ska ligga här eller i Event /RD
+    //Fundera på om denna ska ligga här eller i Participant
+    private Participant getParticipant(int id) {
+        for (Participant p : participantArrayList) {
+            if (p.getId() == id) {
+                return p;
+            }
+        }
+        return null;
+    }
+
+    //Fundera på om denna ska ligga här eller i Event
     private Event getEvent (String eventName){
         for (Event e : eventArrayList){
             if (e.getEventName().equalsIgnoreCase(eventName)){
@@ -636,6 +647,54 @@ public class Contest {
     private void exit() {
         System.out.println("Good bye!");
         System.exit(0);
+    }
+
+    public class TopListPosition implements Comparable<TopListPosition> {
+
+        private String name;
+        private double score;
+        private Event event;
+
+        public TopListPosition(String name, double score, Event event) {
+            this.name = name;
+            this.score = score;
+            this.event = event;
+        }
+
+        @Override
+        public int compareTo(TopListPosition o) {
+            return 0;
+        }
+
+        public class ScoreComparator implements Comparator<TopListPosition> {
+            public int compare(TopListPosition t1, TopListPosition t2){
+
+                if (t1.score == t2.score)
+                    return 0;
+                else if (t1.score > t2.score)
+                    return 1;
+                else
+                    return -1;
+
+            }
+        }
+
+        public String toString(){
+            return name + " " + event.getEventName() + " " + score + " ";
+        }
+
+        public String getName(){
+            return name;
+        }
+
+        public double getScore(){
+            return score;
+        }
+
+        public Event getEvent(){
+            return event;
+        }
+
     }
 
 }

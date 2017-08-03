@@ -1,124 +1,122 @@
-
 //rodi0231_sisc7379_arho2993
 
 
 import java.util.ArrayList;
 
-    public class Participant {
+public class Participant {
 
-        private static int next_id = 99;
+    private static int next_id = 99;
 
-        private String firstName;
-        private String lastName;
-        private String teamName;
-        private int id;
-        private ArrayList<ResultHandler> results = new ArrayList<>();
+    private String firstName;
+    private String lastName;
+    private String teamName;
+    private int id;
+    private ArrayList<Result> results = new ArrayList<>();
 
-        public Participant(String firstName, String lastName, String teamName, int id) {
-            this.firstName = firstName;
-            this.lastName = lastName;
-            this.teamName = teamName;
-            this.id = ++Participant.next_id;
-        }
+    public Participant(String firstName, String lastName, String teamName, int id) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.teamName = teamName;
+        this.id = ++Participant.next_id;
+    }
 
-        public String getFirstName() {
-            return firstName;
-        }
+    public String getFirstName() {
+        return firstName;
+    }
 
-        public String getLastName() {
-            return lastName;
-        }
+    public String getLastName() {
+        return lastName;
+    }
 
-        public String getTeamName() {
-            return teamName;
-        }
+    public String getTeamName() {
+        return teamName;
+    }
 
-        public int getId() {
-            return id;
-        }
+    public int getId() {
+        return id;
+    }
 
-        public static void reinitializeID(){
-            next_id = 99;
-        }
+    public static void reinitializeID(){
+        next_id = 99;
+    }
 
-        public void setResultToList(Event event, Result result, Participant participant){
+    public void setResultToList(Event event, Result result, Participant participant){
 
-            results.add(new ResultHandler(event, result, participant));
+        results.add(new Result(event, result, participant));
 
 
-        }
+    }
 
-        public Double getBestResultBiggerBetterTrue(Event event) {
+    public Double getBestResultBiggerBetterTrue(Event event) {
 
-            if (!getResultsByEvent(event).isEmpty()) {
+        if (!getResultsByEvent(event).isEmpty()) {
 
-                double max = Double.MIN_VALUE;
-                for (int i = 0; i < results.size(); i++) {
-                    if (results.get(i).getEvent().equals(event) && results.get(i).getResultFromList().getResult() > max) {
-                        max = results.get(i).getResultFromList().getResult();
-                    }
-                }
-                return max;
-
-            }
-            else{
-                return -1.0;
-            }
-        }
-
-        public Double getBestResultBiggerBetterFalse(Event event){
-            {
-
-                if (!getResultsByEvent(event).isEmpty()) {
-
-                    double min = Double.MAX_VALUE;
-                    for (int i = 0; i < results.size(); i++) {
-                        if (results.get(i).getEvent().equals(event) && results.get(i).getResultFromList().getResult() < min) {
-                            min = results.get(i).getResultFromList().getResult();
-                        }
-                    }
-                    return min;
-
-                }
-                else{
-                    return -1.0;
+            double max = Double.MIN_VALUE;
+            for (int i = 0; i < results.size(); i++) {
+                if (results.get(i).getEvent().equals(event) && results.get(i).getResultFromList().getResult() > max) {
+                    max = results.get(i).getResultFromList().getResult();
                 }
             }
+            return max;
 
         }
+        else{
+            return -1.0;
+        }
+    }
 
-        public ArrayList<Double> getResultsByEvent(Event event){
+        //Behövs ej pga BiggerBetter ej används den här gången
+//    public Double getBestResultBiggerBetterFalse(Event event){
+//        {
+//
+//            if (!getResultsByEvent(event).isEmpty()) {
+//
+//                double min = Double.MAX_VALUE;
+//                for (int i = 0; i < results.size(); i++) {
+//                    if (results.get(i).getEvent().equals(event) && results.get(i).getResultFromList().getResult() < min) {
+//                        min = results.get(i).getResultFromList().getResult();
+//                    }
+//                }
+//                return min;
+//
+//            }
+//            else{
+//                return -1.0;
+//            }
+//        }
+//
+//    }
 
-            ArrayList<Double> gatheredResults = new ArrayList<>();
-            for (ResultHandler r : results){
-                if(event.getEventName().equalsIgnoreCase(r.getEvent().getEventName())) {
-                    gatheredResults.add(r.getResultFromList().getResult());
+    public ArrayList<Double> getResultsByEvent(Event event){
 
-                }
+        ArrayList<Double> gatheredResults = new ArrayList<>();
+        for (Result r : results){
+            if(event.getEventName().equalsIgnoreCase(r.getEvent().getEventName())) {
+                gatheredResults.add(r.getResultFromList().getResult());
 
             }
 
-            return gatheredResults;
         }
 
-        public String toString(){
-            return firstName;
-        }
+        return gatheredResults;
+    }
 
-        public int getAmountOfAttempts (Event e){
-            int counter = 0;
-            for(ResultHandler r : results){
-                if (e.getEventName().equalsIgnoreCase(r.getEvent().getEventName())){
-                    counter++;
-                }
+    public String toString(){
+        return firstName;
+    }
+
+    public int getAmountOfAttempts (Event e){
+        int counter = 0;
+        for(Result r : results){
+            if (e.getEventName().equalsIgnoreCase(r.getEvent().getEventName())){
+                counter++;
             }
-            return counter;
         }
+        return counter;
+    }
 
-        public ArrayList<ResultHandler> getResults() {
-            return results;
-        }
-
+    public ArrayList<Result> getResults() { //Tagit bort r, är det korrekt?
+        return results;
     }
 
 }
