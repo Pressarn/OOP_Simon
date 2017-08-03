@@ -141,7 +141,7 @@ public class Contest {
         }
 
         eventName = eventName.trim().substring(0,1).toUpperCase() + eventName.substring(1).toLowerCase();
-        Event e = new Event(eventName, attemptsAllowed, biggerBetter);
+        Event e = new Event(eventName, attemptsAllowed);
         eventArrayList.add(e);
 
         System.out.println(e.getEventName() + " has been added.");
@@ -647,6 +647,21 @@ public class Contest {
     private void exit() {
         System.out.println("Good bye!");
         System.exit(0);
+    }
+
+    private void execute() {
+        writeMenu();
+        while (true) {
+            String command = readCommand();
+            manageCommand(command);
+        }
+    }
+
+    public static void main(String[] args) {
+        Contest competition = new Contest();
+        competition.initiate();
+        competition.execute();
+        competition.exit();
     }
 
     public class TopListPosition implements Comparable<TopListPosition> {
