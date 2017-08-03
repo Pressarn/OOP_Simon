@@ -1,57 +1,124 @@
-/**
- * Created by SimonSchwieler on 2017-06-08.
- */
-public class Participant {
+
+//rodi0231_sisc7379_arho2993
 
 
+import java.util.ArrayList;
 
-    private String name;
-    private String lastName;
-    private Team team;
-    private int number;
+    public class Participant {
+
+        private static int next_id = 99;
+
+        private String firstName;
+        private String lastName;
+        private String teamName;
+        private int id;
+        private ArrayList<ResultHandler> results = new ArrayList<>();
+
+        public Participant(String firstName, String lastName, String teamName, int id) {
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.teamName = teamName;
+            this.id = ++Participant.next_id;
+        }
+
+        public String getFirstName() {
+            return firstName;
+        }
+
+        public String getLastName() {
+            return lastName;
+        }
+
+        public String getTeamName() {
+            return teamName;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public static void reinitializeID(){
+            next_id = 99;
+        }
+
+        public void setResultToList(Event event, Result result, Participant participant){
+
+            results.add(new ResultHandler(event, result, participant));
 
 
-    public Participant(String name, String lastName, Team team, int number){
-        this.name = name;
-        this.lastName = lastName;
-        this.team = team;
-        this.number = number;
+        }
+
+        public Double getBestResultBiggerBetterTrue(Event event) {
+
+            if (!getResultsByEvent(event).isEmpty()) {
+
+                double max = Double.MIN_VALUE;
+                for (int i = 0; i < results.size(); i++) {
+                    if (results.get(i).getEvent().equals(event) && results.get(i).getResultFromList().getResult() > max) {
+                        max = results.get(i).getResultFromList().getResult();
+                    }
+                }
+                return max;
+
+            }
+            else{
+                return -1.0;
+            }
+        }
+
+        public Double getBestResultBiggerBetterFalse(Event event){
+            {
+
+                if (!getResultsByEvent(event).isEmpty()) {
+
+                    double min = Double.MAX_VALUE;
+                    for (int i = 0; i < results.size(); i++) {
+                        if (results.get(i).getEvent().equals(event) && results.get(i).getResultFromList().getResult() < min) {
+                            min = results.get(i).getResultFromList().getResult();
+                        }
+                    }
+                    return min;
+
+                }
+                else{
+                    return -1.0;
+                }
+            }
+
+        }
+
+        public ArrayList<Double> getResultsByEvent(Event event){
+
+            ArrayList<Double> gatheredResults = new ArrayList<>();
+            for (ResultHandler r : results){
+                if(event.getEventName().equalsIgnoreCase(r.getEvent().getEventName())) {
+                    gatheredResults.add(r.getResultFromList().getResult());
+
+                }
+
+            }
+
+            return gatheredResults;
+        }
+
+        public String toString(){
+            return firstName;
+        }
+
+        public int getAmountOfAttempts (Event e){
+            int counter = 0;
+            for(ResultHandler r : results){
+                if (e.getEventName().equalsIgnoreCase(r.getEvent().getEventName())){
+                    counter++;
+                }
+            }
+            return counter;
+        }
+
+        public ArrayList<ResultHandler> getResults() {
+            return results;
+        }
+
     }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public Team getTeam() {
-        return team;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public void checkAttempts(Event event){
-
-    }
-
-    public void addResult(Result result){
-
-    }
-
-    public void printResults(){
-
-    }
-
-    public String toString(){
-        return name + " " + lastName + " " + team + " " + number;
-    }
-
-
-
-
 
 }
